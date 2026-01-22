@@ -74,10 +74,11 @@ src/
 
 <!-- List MCP servers the team uses -->
 This project uses the following MCP integrations:
-- **Jira**: For issue tracking and sprint management
-- **Notion**: For documentation and knowledge base
+- **Atlassian**: Jira for issue tracking and sprint management
+- **Notion**: Documentation and knowledge base
+- **Supernova**: Design system tokens, components, and documentation
 
-See `.mcp.json` for configuration (credentials stored separately).
+See `.mcp.json` for configuration. Authentication is handled via OAuth when first connecting.
 
 ## Custom Agents
 

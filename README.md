@@ -60,7 +60,9 @@ Shared Claude Code configuration for the team, including custom agents, skills, 
 
 ### MCP Integrations
 
-- **Jira**: Sprint management, ticket operations, board analysis
+- **Atlassian**: Jira sprint management, ticket operations, board analysis
+- **Notion**: Documentation, knowledge base, databases
+- **Supernova**: Design system tokens, components, documentation
 
 ## Configuration Files
 
@@ -133,15 +135,13 @@ Create `CLAUDE.local.md` for personal project notes.
    ```
 3. Add skill instructions below
 
-## Environment Variables
+## MCP Authentication
 
-Required for MCP integrations:
+The MCP servers use HTTP remotes with OAuth authentication. When you first use them, Claude Code will prompt you to authenticate:
 
-| Variable | Description |
-|----------|-------------|
-| `JIRA_URL` | Your Jira instance URL |
-| `JIRA_USERNAME` | Your Jira email |
-| `JIRA_API_TOKEN` | Jira API token ([create here](https://id.atlassian.com/manage-profile/security/api-tokens)) |
+- **Atlassian**: Connects to your Atlassian account for Jira access
+- **Notion**: Connects to your Notion workspace
+- **Supernova**: Connects to your Supernova design system
 
 ## Setup Auditor Hook
 
