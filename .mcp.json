@@ -1,13 +1,16 @@
 {
   "mcpServers": {
-    "mcp-atlassian": {
-      "command": "uvx",
-      "args": ["mcp-atlassian"],
-      "env": {
-        "JIRA_URL": "${JIRA_URL}",
-        "JIRA_USERNAME": "${JIRA_USERNAME}",
-        "JIRA_API_TOKEN": "${JIRA_API_TOKEN}"
-      }
+    "atlassian": {
+      "type": "http",
+      "url": "https://mcp.atlassian.com"
+    },
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    },
+    "supernova": {
+      "type": "http",
+      "url": "https://mcp.supernova.io/mcp/ds/575774"
     }
   }
 }
