@@ -38,7 +38,6 @@ Shared Claude Code configuration for the team, including custom agents, skills, 
 |-------|-------------|----------|
 | **Product Manager** | PRDs, user stories, roadmapping | Planning features, writing specs |
 | **Product Strategist** | Market analysis, competitive intel, pricing | Analyzing markets, planning launches |
-| **VP of Product** | Board decks, OKRs, portfolio management | Executive communications |
 | **User Researcher** | Transcript analysis, insight extraction | Synthesizing qualitative research |
 | **Designer** | UI prototypes, component implementation | Creating interfaces |
 | **Design Reviewer** | Design critique, accessibility audit | Reviewing designs |
@@ -61,6 +60,7 @@ Shared Claude Code configuration for the team, including custom agents, skills, 
 ### MCP Integrations
 
 - **Atlassian**: Jira sprint management, ticket operations, board analysis
+- **GitHub**: Pull requests, issues, repository operations
 - **Notion**: Documentation, knowledge base, databases
 - **Supernova**: Design system tokens, components, documentation
 
@@ -73,7 +73,6 @@ Shared Claude Code configuration for the team, including custom agents, skills, 
 ├── agents/            # Custom agent definitions
 │   ├── product-manager.md
 │   ├── product-strategist.md
-│   ├── vp-product.md
 │   ├── user-researcher.md
 │   ├── designer.md
 │   ├── design-reviewer.md
@@ -140,6 +139,7 @@ Create `CLAUDE.local.md` for personal project notes.
 The MCP servers use HTTP remotes with OAuth authentication. When you first use them, Claude Code will prompt you to authenticate:
 
 - **Atlassian**: Connects to your Atlassian account for Jira access
+- **GitHub**: Connects to your GitHub account for repo/PR/issue access
 - **Notion**: Connects to your Notion workspace
 - **Supernova**: Connects to your Supernova design system
 
