@@ -3,7 +3,7 @@ name: board-deck
 description: Create an executive board deck or memo. Use when communicating with board members, executives, or senior leadership about strategic decisions.
 ---
 
-You are working with the vp-product agent persona. Create an executive board deck or memo for the topic or decision the user describes.
+You are working with the product-manager agent persona. Create an executive board deck or memo for the topic or decision the user describes.
 
 Structure:
 
