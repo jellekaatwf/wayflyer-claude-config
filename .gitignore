@@ -1,0 +1,30 @@
+# Claude Code personal overrides (not shared)
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Environment and secrets
+.env
+.env.*
+*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node (if applicable)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Credentials - NEVER commit these
+**/credentials*
+**/secrets*
+**/*api_key*
+**/*apikey*
+**/*token*
