@@ -4,31 +4,79 @@ Shared Claude Code configuration for the team, including custom agents, skills, 
 
 ## Quick Start
 
-1. **Clone this repo** into your project or home directory:
+1. **Clone this repo**:
    ```bash
-   git clone <repo-url> ~/.claude-team-config
+   git clone <repo-url> ~/wayflyer-claude-config
    ```
 
-2. **Copy to your project** (recommended) or symlink:
+2. **Set up global MCP servers** (work across ALL projects):
    ```bash
-   # Option A: Copy to your project
-   cp -r ~/.claude-team-config/.claude /path/to/your/project/
-   cp ~/.claude-team-config/.mcp.json /path/to/your/project/
+   # Copy the MCP config to your global settings
+   # First, backup existing settings if any
+   cp ~/.claude/settings.json ~/.claude/settings.json.bak 2>/dev/null || true
 
-   # Option B: Use as your user-level config
-   cp -r ~/.claude-team-config/.claude ~/.claude
+   # Merge MCP servers into your global settings
+   # Or manually copy the mcpServers block from global-settings.template.json
+   # into ~/.claude/settings.json
    ```
 
-3. **Set up environment variables** for MCP servers:
+3. **Copy agents and skills** to your home directory:
    ```bash
-   export JIRA_URL="https://your-company.atlassian.net"
-   export JIRA_USERNAME="your-email@company.com"
+   cp -r ~/wayflyer-claude-config/.claude/agents ~/.claude/
+   cp -r ~/wayflyer-claude-config/.claude/skills ~/.claude/
+   ```
+
+4. **Set up environment variables** for Jira:
+   ```bash
+   # Add to your ~/.zshrc or ~/.bashrc
    export JIRA_API_TOKEN="your-api-token"
    ```
 
-4. **Customize CLAUDE.md** for your specific project context.
+5. **Restart Claude Code** to pick up the new configuration.
 
-5. **Run Claude Code** and trust the configuration when prompted.
+## Configuration Levels
+
+| Level | File | Scope |
+|-------|------|-------|
+| **Global** | `~/.claude/settings.json` | All projects |
+| **Project** | `.mcp.json` in project root | Single project only |
+| **Project** | `.claude/settings.json` in project | Single project only |
+
+### Global MCP Setup (Recommended)
+
+For MCPs that should work everywhere, add them to `~/.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    },
+    "supernova": {
+      "type": "http",
+      "url": "https://mcp.supernova.io/mcp/ds/575774/dataset/613448"
+    },
+    "mcp-atlassian": {
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
+      "env": {
+        "JIRA_URL": "https://wayflyer.atlassian.net",
+        "JIRA_USERNAME": "your-email@wayflyer.com",
+        "JIRA_API_TOKEN": "${JIRA_API_TOKEN}"
+      }
+    }
+  }
+}
+```
+
+See `global-settings.template.json` for a complete template.
+
+### Project-Level MCP Setup
+
+For project-specific MCPs, use `.mcp.json` in the project root. This is useful for:
+- MCPs that only apply to certain projects
+- Sharing MCP config with team via git
 
 ## What's Included
 
@@ -136,12 +184,23 @@ Create `CLAUDE.local.md` for personal project notes.
 
 ## MCP Authentication
 
-The MCP servers use HTTP remotes with OAuth authentication. When you first use them, Claude Code will prompt you to authenticate:
+### HTTP MCPs (OAuth)
 
-- **Atlassian**: Connects to your Atlassian account for Jira access
-- **GitHub**: Connects to your GitHub account for repo/PR/issue access
+These use browser-based OAuth - Claude Code will prompt you to authenticate:
+
 - **Notion**: Connects to your Notion workspace
 - **Supernova**: Connects to your Supernova design system
+- **GitHub** (optional): Connects to your GitHub account
+
+### Local MCPs (API Token)
+
+These run locally and use environment variables:
+
+- **mcp-atlassian**: Requires `JIRA_API_TOKEN` environment variable
+  ```bash
+  # Get your token from: https://id.atlassian.com/manage-profile/security/api-tokens
+  export JIRA_API_TOKEN="your-token-here"
+  ```
 
 ## Setup Auditor Hook
 
