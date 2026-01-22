@@ -75,6 +75,7 @@ src/
 <!-- List MCP servers the team uses -->
 This project uses the following MCP integrations:
 - **Atlassian**: Jira for issue tracking and sprint management
+- **GitHub**: Pull requests, issues, repository operations
 - **Notion**: Documentation and knowledge base
 - **Supernova**: Design system tokens, components, and documentation
 
