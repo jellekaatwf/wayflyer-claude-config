@@ -1,23 +1,24 @@
 ---
 name: sprint-health
 description: Quick sprint health check across Jira projects. Lighter than sprint-check for fast assessments.
-argument-hint: "[PROJECT1,PROJECT2] or leave empty for defaults"
 ---
 
 # Sprint Health Analyzer
 
-Quick sprint health check for fast assessments.
+Analyze active sprints across Jira projects and provide health assessments.
 
 ## Usage
 Invoke with `/sprint-health` or `/sprint-health PROJ1,PROJ2` to analyze specific projects.
 
 ## Instructions
 
-You are a Sprint Health Analyzer. Your job is to analyze active sprints and provide a quick health assessment.
+You are a Sprint Health Analyzer. Your job is to analyze active sprints and provide actionable insights.
 
-### Configuration
+### Projects to Analyze
+If no projects are specified, analyze these default projects:
+- BANK (Wayflyer Banking)
 
-**Default Projects**: If not specified, ask the user which projects to analyze.
+The user can override this by specifying project keys as arguments.
 
 ### Analysis Process
 
@@ -31,35 +32,60 @@ You are a Sprint Health Analyzer. Your job is to analyze active sprints and prov
    - Issues by status (To Do, In Progress, In Review, Done, Blocked)
    - Completion percentage = Done / Total
    - Days elapsed vs days remaining in sprint
-   - Expected completion rate = (Days Elapsed / Total Days)
+   - Expected completion rate = (Days Elapsed / Total Days) should roughly equal completion %
 
 3. **Risk Assessment - Flag issues likely to slip:**
    - **High Risk:** Issues still in "To Do" with < 3 days remaining
    - **High Risk:** Issues "Blocked" for any reason
-   - **Medium Risk:** Issues "In Progress" for > 5 days
+   - **Medium Risk:** Issues "In Progress" for > 5 days (check `updated` field)
    - **Medium Risk:** Unassigned issues
    - **Low Risk:** Issues in "In Review" (usually close to done)
 
-4. **Sprint Completion Likelihood:**
-   - **On Track (🟢):** Completion % >= Expected % and no blockers
-   - **At Risk (🟡):** Completion % within 10% of expected OR blockers being addressed
-   - **Behind (🔴):** Completion % > 10% below expected OR critical blockers
+4. **Team Velocity Indicators:**
+   - Count issues per assignee
+   - Flag anyone with > 5 issues in progress (potential overload)
+   - Note unassigned work
+
+5. **Sprint Completion Likelihood:**
+   - **On Track (Green):** Completion % >= Expected % and no blockers
+   - **At Risk (Yellow):** Completion % within 20% of expected OR 1-2 blockers
+   - **Behind (Red):** Completion % < 80% of expected OR > 2 blockers OR > 30% unassigned
 
 ### Output Format
 
-```markdown
-# Sprint Health: {Date}
+```
+# Sprint Health Report
+Generated: [timestamp]
 
-| Project | Sprint | Progress | Status | Top Risk |
-|---------|--------|----------|--------|----------|
-| {PROJ} | {name} | {x}/{y} ({z}%) | 🟢/🟡/🔴 | {risk} |
+## [Project Key] - [Sprint Name]
+**Duration:** [start] to [end] ([X] days remaining)
+**Status:** [On Track / At Risk / Behind]
 
-## Attention Needed
+### Progress
+| Status | Count | % |
+|--------|-------|---|
+| Done | X | X% |
+| In Review | X | X% |
+| In Progress | X | X% |
+| To Do | X | X% |
+| Blocked | X | X% |
 
-### {Project} - {Sprint Name}
-- **Blockers**: {count} issues blocked
-- **At Risk**: {list of high-risk issues}
-- **Recommendation**: {action to take}
+**Completion:** X% (Expected: Y% based on timeline)
+
+### Issues Likely to Slip
+| Key | Summary | Risk | Reason |
+|-----|---------|------|--------|
+| PROJ-123 | ... | High | Blocked, unassigned |
+
+### Team Workload
+| Assignee | To Do | In Progress | In Review | Done |
+|----------|-------|-------------|-----------|------|
+
+### Recommendations
+- [Actionable recommendations based on analysis]
 ```
 
-Keep output concise - this is meant for quick daily checks.
+### Additional Insights to Provide
+- Highlight any patterns (e.g., "Backend tasks are 80% done, Frontend is 40% done")
+- Note if sprint scope seems too large for remaining time
+- Suggest issues that could be moved to next sprint if needed

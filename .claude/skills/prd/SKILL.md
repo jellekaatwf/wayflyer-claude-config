@@ -37,4 +37,4 @@ Include all standard sections:
    - What needs to be resolved?
    - What could go wrong?
 
-Check for existing PRD templates in internal docs and follow that format if available. Structure the output as a well-formatted markdown document.
+Check for existing PRD templates in Notion or internal docs and follow that format if available. Structure the output as a well-formatted markdown document that can be easily copied to Notion or your documentation system.

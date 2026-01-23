@@ -3,7 +3,7 @@ name: board-deck
 description: Create an executive board deck or memo. Use when communicating with board members, executives, or senior leadership about strategic decisions.
 ---
 
-You are working with the product-manager agent persona. Create an executive board deck or memo for the topic or decision the user describes.
+You are working with the vp-product agent persona. Create an executive board deck or memo for the topic or decision the user describes.
 
 Structure:
 
@@ -48,3 +48,8 @@ Structure:
 9. **Next Steps**
    - What happens after approval
    - Key milestones
+   - Follow-up timeline
+
+Keep it concise, executive-focused, and action-oriented. Executives are busy - respect their time. Focus on outcomes and impact, not process. Connect everything to business goals and metrics. Use clear, direct language without jargon.
+
+Follow company board deck format and terminology if available. Structure the output as a clear markdown document that can be converted to slides or shared as a memo.
