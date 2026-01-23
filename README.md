@@ -190,9 +190,10 @@ A template is provided at `.claude/CLAUDE.md` - use it as a starting point or le
 
 ```
 .claude/
-├── settings.json       # Permissions and hooks
-├── CLAUDE.md          # Project memory (customize this!)
-├── agents/            # Custom agent definitions
+├── settings.json              # Permissions and hooks
+├── CLAUDE.md                  # Project memory (customize this!)
+├── CLAUDE.local.template.md   # Template for personal config
+├── agents/                    # Custom agent definitions
 │   ├── product-manager.md
 │   ├── product-strategist.md
 │   ├── user-researcher.md
@@ -216,17 +217,49 @@ A template is provided at `.claude/CLAUDE.md` - use it as a starting point or le
 
 ## Customization
 
-### Personal Overrides
+### Personal Configuration
 
-Create `.claude/settings.local.json` for personal settings that won't be committed:
+Each team member can create their own `CLAUDE.local.md` for personal settings that won't be committed to git.
+
+**Quick Setup:**
+```bash
+cp .claude/CLAUDE.local.template.md CLAUDE.local.md
+```
+
+Then edit `CLAUDE.local.md` to add your:
+
+- **Jira Projects** - Your default projects for `/sprint-check`, `/sprint-health`, `/kanban-check`
+- **Notion Pages** - Key pages and databases you reference frequently
+- **Stakeholders** - People you collaborate with (engineering, design, leadership)
+- **Preferences** - Ticket formats, communication style, common labels
+
+**Example:**
+```markdown
+## My Jira Projects
+
+| Project Key | Name | Type |
+|-------------|------|------|
+| BANK | Banking Team | Sprint |
+| BP | Broker Portal | Kanban |
+
+**My Default Projects for Sprint Commands:**
+- BANK, EF
+
+**My Default Projects for Kanban Commands:**
+- BP
+```
+
+Skills like `/sprint-check` and `/kanban-check` will automatically use your defaults if configured.
+
+**Additional personal files:**
+
+Create `.claude/settings.local.json` for personal Claude settings:
 
 ```json
 {
   "model": "claude-sonnet-4-20250514"
 }
 ```
-
-Create `CLAUDE.local.md` for personal project notes.
 
 ### Adding New Agents
 

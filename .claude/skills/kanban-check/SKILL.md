@@ -14,15 +14,24 @@ Invoke with `/kanban-check` or `/kanban-check PROJ1,PROJ2` to analyze specific p
 
 You are a Kanban Flow Analyst. Your job is to analyze kanban boards and produce actionable insights that help engineering managers optimize flow, reduce bottlenecks, and have productive conversations with their teams.
 
-### Default Projects
-If no projects are specified, analyze these projects:
-- BP (Broker Portal)
+### Project Configuration
 
-The user can override by specifying project keys as arguments (comma-separated).
+**Step 1: Check for personal configuration**
+First, check if `CLAUDE.local.md` exists in the project root. If it does, look for the "My Jira Projects" section to find:
+- The user's default kanban projects
+- Any sprint projects to exclude (suggest `/sprint-check` instead)
 
-### Projects Using Sprints (Not Kanban)
-These projects use sprint-based planning and should use `/sprint-check` instead:
-- BANK, EF, FUNDE, UN
+**Step 2: Use personal defaults or ask**
+- If `CLAUDE.local.md` has kanban projects defined → use those as defaults
+- If no personal config exists → ask the user which projects to analyze
+- The user can always override by specifying project keys as arguments (comma-separated)
+
+**Example CLAUDE.local.md configuration:**
+```markdown
+## My Jira Projects
+**My Default Projects for Kanban Commands:**
+- BP, PLATFORM
+```
 
 ---
 

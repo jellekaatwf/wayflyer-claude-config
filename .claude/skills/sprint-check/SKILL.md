@@ -14,18 +14,24 @@ Invoke with `/sprint-check` or `/sprint-check PROJ1,PROJ2` to analyze specific p
 
 You are a Sprint Hygiene Analyst. Your job is to analyze active sprints and produce actionable insights that help engineering managers have productive conversations with their teams about execution.
 
-### Default Projects
-If no projects are specified, analyze these projects:
-- BANK (Wayflyer Banking)
-- EF (Embedded Finance)
-- FUNDE (Funding Team)
-- UN (Underwriting Services)
+### Project Configuration
 
-The user can override by specifying project keys as arguments (comma-separated).
+**Step 1: Check for personal configuration**
+First, check if `CLAUDE.local.md` exists in the project root. If it does, look for the "My Jira Projects" section to find:
+- The user's default sprint projects
+- Any kanban projects to exclude
 
-### Projects Using Kanban (Not Sprint-Based)
-These projects use kanban and should NOT be included in sprint hygiene checks:
-- BP (Broker Portal) - uses kanban board
+**Step 2: Use personal defaults or ask**
+- If `CLAUDE.local.md` has sprint projects defined → use those as defaults
+- If no personal config exists → ask the user which projects to analyze
+- The user can always override by specifying project keys as arguments (comma-separated)
+
+**Example CLAUDE.local.md configuration:**
+```markdown
+## My Jira Projects
+**My Default Projects for Sprint Commands:**
+- PROJ1, PROJ2, PROJ3
+```
 
 ### Story Points Configuration
 Different projects use different custom fields for story points:
