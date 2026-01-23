@@ -112,6 +112,80 @@ For project-specific MCPs, use `.mcp.json` in the project root. This is useful f
 - **Notion**: Documentation, knowledge base, databases
 - **Supernova**: Design system tokens, components, documentation
 
+## Setting Up Your CLAUDE.md File
+
+The `CLAUDE.md` file is your project's memory - it tells Claude about your codebase, team conventions, and how to work effectively in your project. Instead of writing this manually, you can have Claude help you create a comprehensive one through a guided conversation.
+
+### Interactive Setup (Recommended)
+
+Use the `/createclaudemd` command to start a guided setup:
+
+```
+/createclaudemd
+```
+
+Claude will walk you through a series of targeted questions, one section at a time, to build a comprehensive file. Topics covered:
+
+1. **Project Overview**
+   - What does this project do?
+   - What's the tech stack?
+   - Who is the target user?
+
+2. **Team Context**
+   - What team owns this?
+   - What are the communication channels?
+   - Who are the key stakeholders?
+
+3. **Architecture**
+   - What are the main components?
+   - How do services communicate?
+   - What external dependencies exist?
+
+4. **Coding Standards**
+   - What style guides do you follow?
+   - What testing frameworks are used?
+   - What are the PR/review conventions?
+
+5. **Common Workflows**
+   - How do you run the project locally?
+   - How do you deploy?
+   - What are the key commands?
+
+6. **External Integrations**
+   - What tools does the team use? (Jira, Notion, Figma, etc.)
+   - What APIs does the project integrate with?
+
+### Example Prompts
+
+For a new project:
+```
+I'm setting up CLAUDE.md for a new React app. Help me create a comprehensive
+project memory file by asking me about the project.
+```
+
+For an existing project:
+```
+Help me document this codebase in CLAUDE.md. Start by exploring the project
+structure and ask me questions to fill in the gaps.
+```
+
+For updating an existing file:
+```
+Review my current CLAUDE.md and suggest improvements. Ask me questions about
+anything that's missing or unclear.
+```
+
+### Tips
+
+- **Be specific**: The more detail you provide, the better Claude can assist you in this project
+- **Include examples**: Add code snippets showing your preferred patterns
+- **Keep it updated**: Revisit the file when major changes happen
+- **Use CLAUDE.local.md**: For personal notes that shouldn't be shared with the team
+
+### Template
+
+A template is provided at `.claude/CLAUDE.md` - use it as a starting point or let Claude guide you through creating one from scratch.
+
 ## Configuration Files
 
 ```
