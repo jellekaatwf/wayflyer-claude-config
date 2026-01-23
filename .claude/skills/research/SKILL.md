@@ -1,36 +1,28 @@
 ---
 name: research
-description: Analyze transcripts or interviews as a user researcher. Extracts pain points, feature requests, objections, competitor mentions, use cases, and buying signals.
-argument-hint: "[transcript URL or 'paste']"
+description: Analyze sales call transcripts as a user researcher. Extracts pain points, feature requests, objections, competitor mentions, use cases, and buying signals from tldv transcripts stored in Notion.
 ---
 
-# User Research Analysis
+This skill invokes the User Researcher agent to analyze sales call transcripts.
 
-This skill invokes the User Researcher agent to analyze transcripts and interviews.
+## How to Use
 
-## Usage
-
-- `/research` - Start research analysis (will prompt for input)
-- `/research paste` - Analyze transcript you'll paste
-- `/research <url>` - Analyze transcript from URL
-
-## How It Works
-
-When invoked, use the Task tool to spawn the user-researcher agent:
+When the user invokes `/research`, use the Task tool to spawn the user-researcher agent:
 
 ```
 Task tool:
 - subagent_type: "user-researcher"
-- prompt: Include any context from the user (URL, focus area, etc.)
+- prompt: Include any context from the user (Notion URL, focus area, etc.)
+- run_in_background: true (unless user needs immediate response)
 ```
 
 ## Agent Capabilities
 
 The user-researcher agent will:
 1. Ask clarifying questions about focus area and transcript source
-2. Fetch or receive the transcript
-3. Identify speakers (internal vs customer/prospect)
-4. Extract customer-focused insights:
+2. Fetch the transcript from Notion
+3. Identify speakers (sales rep vs prospect)
+4. Extract customer-focused insights (NOT call summaries):
    - Pain points (with direct quotes)
    - Jobs to be done / outcomes they care about
    - Unmet needs and workarounds
@@ -38,13 +30,31 @@ The user-researcher agent will:
    - Objections / concerns
    - Competitor mentions
    - Buying signals
-5. Output structured research summary
+5. Save research summary to `/Users/jelle.kaat/claude/wayflyer/research/`
 
-## Output
+## Invocation Examples
 
-The agent produces a structured research document with:
-- Executive summary
-- Company/participant context
-- Key findings tables (pain points, needs, objections, competitors)
-- Recommendations for Product, Sales, and follow-up research
-- Raw quotes for reference
+**With URL provided:**
+```
+/research https://www.notion.so/wayflyer/Meeting-Name-abc123
+```
+→ Spawn agent with: "Analyze this transcript: [URL]. Focus: general analysis."
+
+**Without URL:**
+```
+/research
+```
+→ Spawn agent with: "Ask user for focus area and transcript URL, then analyze."
+
+**With focus area:**
+```
+/research funding products
+```
+→ Spawn agent with: "Analyze transcript with focus on Funding products. Ask for URL."
+
+## Output Location
+
+Research summaries are saved to:
+`/Users/jelle.kaat/claude/wayflyer/research/{date}-{company-name}-{topic}.md`
+
+Example: `2026-01-21-allthegoods-banking.md`

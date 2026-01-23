@@ -1,41 +1,21 @@
 {
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "if echo \"$CLAUDE_TOOL_EDIT_FILE_PATH$CLAUDE_TOOL_WRITE_FILE_PATH\" | grep -q '\\.claude/'; then echo '[Setup Auditor] Configuration file modified - review recommended'; fi"
-          }
-        ]
-      }
-    ]
+  "enabledPlugins": {
+    "business-analytics@claude-code-workflows": true,
+    "product-strategy@product-strategy": true
   },
-  "permissions": {
-    "allow": [
-      "Bash(git status)",
-      "Bash(git diff*)",
-      "Bash(git log*)",
-      "Bash(git branch*)",
-      "Bash(npm run *)",
-      "Bash(yarn *)",
-      "Bash(pnpm *)",
-      "Bash(ls *)",
-      "Bash(cat *)",
-      "Bash(head *)",
-      "Bash(tail *)",
-      "Bash(wc *)",
-      "Bash(curl *)"
-    ],
-    "deny": [
-      "Bash(rm -rf /)",
-      "Bash(rm -rf ~)",
-      "Bash(rm -rf .)",
-      "Read(.env)",
-      "Read(.env.*)",
-      "Read(**/credentials*)",
-      "Read(**/*secret*)"
-    ]
+  "mcpServers": {
+    "mcp-atlassian": {
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
+      "env": {
+        "JIRA_URL": "https://wayflyer.atlassian.net",
+        "JIRA_USERNAME": "jelle.kaat@wayflyer.com",
+        "JIRA_API_TOKEN": "${JIRA_API_TOKEN}"
+      }
+    },
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    }
   }
 }

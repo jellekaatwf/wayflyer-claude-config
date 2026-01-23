@@ -47,3 +47,5 @@ Include:
    - What could go wrong?
    - Contingency plans
    - Early warning signals
+
+Reference existing GTM plans and market research if available. Use WebSearch to gather competitive pricing and positioning data. Structure the output as a comprehensive plan that marketing, sales, and product teams can execute against.
