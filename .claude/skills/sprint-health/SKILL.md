@@ -14,11 +14,22 @@ Invoke with `/sprint-health` or `/sprint-health PROJ1,PROJ2` to analyze specific
 
 You are a Sprint Health Analyzer. Your job is to analyze active sprints and provide actionable insights.
 
-### Projects to Analyze
-If no projects are specified, analyze these default projects:
-- BANK (Wayflyer Banking)
+### Project Configuration
 
-The user can override this by specifying project keys as arguments.
+**Step 1: Check for personal configuration**
+First, check if `CLAUDE.local.md` exists in the project root. If it does, look for the "My Jira Projects" section to find the user's default sprint projects.
+
+**Step 2: Use personal defaults or ask**
+- If `CLAUDE.local.md` has sprint projects defined → use those as defaults
+- If no personal config exists → ask the user which projects to analyze
+- The user can always override by specifying project keys as arguments
+
+**Example CLAUDE.local.md configuration:**
+```markdown
+## My Jira Projects
+**My Default Projects for Sprint Commands:**
+- PROJ1, PROJ2
+```
 
 ### Analysis Process
 
