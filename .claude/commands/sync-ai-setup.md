@@ -41,8 +41,8 @@ If a use case is ambiguous, ask the user which category fits best using AskUserQ
 ### Step 1: Identify the Current User
 
 Use `mcp__notion__notion-search` with `query_type: "user"` to search for the current user by their name or email. Store their Notion user ID (format: `user://UUID`) for:
-- Setting the "Submitted by" field
-- Deduplication queries
+- Setting the "Created by" and "Used by" fields
+- Adoption matching queries
 
 If you cannot determine who the user is, use AskUserQuestion to ask for their name.
 
@@ -94,7 +94,7 @@ For each discovered component, extract a use case entry:
 - Use Case title = `/{filename-without-extension} {description}`
 - Classify into one of the 6 categories
 - Tool(s) used = `["Claude Code"]`
-- **Skip this command itself** (`sync-ai-setup.md`) and `ai-native-eval.md` from the scan
+- **Skip meta-commands**: `sync-ai-setup.md`, `ai-native-eval.md`, and `setup-auditor.md` from the scan
 
 **From settings (MCP servers):**
 - Extract MCP server names from `mcpServers` keys in settings files
@@ -165,23 +165,26 @@ Present options:
 
 Batch this into a single question if possible (ask the user to review a table and provide corrections rather than asking 15 individual questions).
 
-### Step 6: Deduplicate Against Existing Entries
+### Step 6: Match Against Existing Entries (Adoption Model)
 
-Query the Notion database for entries already submitted by this user:
+Each use case exists **once** in the database. When multiple PMs use the same workflow, they are added to the "Used by" field rather than creating duplicates.
+
+Query the full database for all existing entries:
 
 ```sql
-SELECT url, "Use Case", "Category" FROM "collection://a35171b0-db88-42a1-b2de-c5f58a85e753"
-WHERE "Submitted by" LIKE '%{user_id}%'
+SELECT url, "Use Case", "Category", "Used by" FROM "collection://a35171b0-db88-42a1-b2de-c5f58a85e753"
 ```
 
 For each discovered use case:
 1. Check if a similar title already exists (fuzzy match; e.g., "/prd PRD generation" matches "/prd PRD generation agent")
-2. If a match is found, skip it (don't create a duplicate)
-3. If uncertain, ask the user: "This looks similar to an existing entry: '{existing title}'. Skip or create as new?"
+2. If a match is found and the current user is NOT already in "Used by": **update the existing entry** to add the current user to "Used by" using `mcp__notion__notion-update-page` with `command: "update_properties"`. Append the user ID to the existing "Used by" array.
+3. If a match is found and the current user IS already in "Used by": skip (already tracked)
+4. If no match is found: this is a genuinely new use case, create it in Step 7
+5. If uncertain about a match, ask the user: "This looks similar to an existing entry: '{existing title}'. Add you as a user, or create as new?"
 
 ### Step 7: Create New Entries in Notion
 
-For each new (non-duplicate) use case, batch create using `mcp__notion__notion-create-pages`:
+For each genuinely new use case (no match found in Step 6), batch create using `mcp__notion__notion-create-pages`:
 
 ```json
 {
@@ -194,11 +197,17 @@ For each new (non-duplicate) use case, batch create using `mcp__notion__notion-c
       "Role": "[\"PM\"]",
       "Frequency": "{frequency}",
       "Time saved per week": "{time saved}",
-      "Submitted by": "[\"user://{user_notion_id}\"]"
+      "Origin": "{Shared if from team config repo, Personal if custom}",
+      "Created by": "[\"user://{user_notion_id}\"]",
+      "Used by": "[\"user://{user_notion_id}\"]"
     }
   }]
 }
 ```
+
+**Origin classification:**
+- **Shared**: The use case comes from a skill/command in the team config repo (`wayflyer-claude-config`). These are available to all PMs.
+- **Personal**: The use case is a custom skill/command the PM built themselves, or a workflow from a non-shared tool (ChatGPT, Cursor rules, etc.)
 
 Create all new entries in a single `create-pages` call if possible.
 
@@ -210,15 +219,20 @@ Create all new entries in a single `create-pages` call if possible.
 **User:** {name}
 **Environment:** {what was detected}
 
-### New Use Cases Added: {count}
-| Use Case | Category | Frequency | Time Saved |
-|---|---|---|---|
-| ... | ... | ... | ... |
+### New Use Cases Created: {count}
+| Use Case | Category | Origin | Frequency | Time Saved |
+|---|---|---|---|---|
+| ... | ... | ... | ... | ... |
 
-### Skipped (already in database): {count}
-| Use Case | Matched Existing Entry |
+### Adopted (added you to existing entry): {count}
+| Use Case | Existing Entry |
 |---|---|
 | ... | ... |
+
+### Already Tracking: {count}
+| Use Case | Status |
+|---|---|
+| ... | Already in "Used by" |
 
 ### Workflow Phase Coverage
 | Phase | # Use Cases | Status |
@@ -236,7 +250,7 @@ Create all new entries in a single `create-pages` call if possible.
 ## Important Rules
 
 1. **Always ask before pushing.** Show the user the complete list of what will be created and get confirmation before calling `create-pages`.
-2. **Skip meta-commands.** Do not create entries for `sync-ai-setup` or `ai-native-eval` themselves.
+2. **Skip meta-commands.** Do not create entries for `sync-ai-setup`, `ai-native-eval`, or `setup-auditor` themselves.
 3. **One entry per workflow.** Don't split a single skill/command into multiple entries. Each skill, command, or distinct workflow = one entry.
 4. **Respect the 6 categories.** Every entry must map to exactly one of the 6 workflow phase categories. No other values are allowed.
 5. **Be honest about gaps.** If a PM has no AI usage in a phase, that's useful data. Don't manufacture entries.
